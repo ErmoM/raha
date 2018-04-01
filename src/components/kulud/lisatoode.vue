@@ -219,13 +219,13 @@ export default {
       let hind = this.hind;
       let tooteNimi = this.nimetus;
       let kategooria = this.kategooriaValik;
-      let dateStringina = new Date().toLocaleDateString("et-ET", {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric"
-      });
+    //   let dateStringina = new Date().toLocaleDateString("et-ET", {
+    //     year: "numeric",
+    //     month: "numeric",
+    //     day: "numeric"
+    //   });
 
-      let kuu = new Date().getMonth();
+      let kuu = this.sorteeriKuu;//new Date().getMonth();
       let owner = this.getToken().user;
       if (owner == "5a9ec7f09d58995f40877545") {
         owner = "Ermo";
@@ -239,7 +239,7 @@ export default {
         nimetus: this.nimetus,
         kategooria: this.kategooriaValik,
         kuu: kuu,
-        kuupaev: dateStringina,
+        //kuupaev: dateStringina,
         omanik: owner
       };
       console.log(toode);

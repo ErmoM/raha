@@ -45,7 +45,7 @@ export default {
         },
         { text: "Kategooria", value: "kategooria" },
         { text: "Hind", value: "hind" },
-        { text: "Kuu", value: "kuu" }
+        { text: "Kuu", value: "kuu", sortable: true }
       ],
       items: [],
       kuud: [
@@ -124,8 +124,8 @@ export default {
       let year = date.getFullYear();
       let month =
         date.getMonth() + 1 < 10
-          ? "0" + date.getMonth() + 1
-          : date.getMonth() + 1;
+          ? "0" + (date.getMonth() + 1)
+          : (date.getMonth() + 1);
       let dt = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
 
       let dateFull = dt + "." + month + "." + year;
@@ -153,7 +153,7 @@ export default {
               kuu: vm.kuud[response.data[i].kuu],
               nimetus: response.data[i].nimetus,
               id: response.data[i].id,
-              kuupaev: Date.parse(response.data[i].kuupaev)
+              kuupaev: vm.korrasDate(response.data[i].kuupaev)
             };
 
             vm.items.push(toode);
