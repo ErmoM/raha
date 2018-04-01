@@ -15,7 +15,7 @@
                         required
                         >
                     </v-text-field>
-                    </v-flex>
+                    </v-flex> 
                     <v-flex xs5>
                         <v-text-field
                         name="input-1-3"
@@ -116,124 +116,156 @@
       </v-layout>
 </template>
 <script>
-import {tooteBus} from "../../main"
-import axios from 'axios';
+import { tooteBus } from "../../main";
+import axios from "axios";
 export default {
   data() {
     return {
-        kategooriad: ['Auto','Toidukaup', 'Korter/kommunaalid', 'Meelelahutus', 'Muu','Säästud'],
-        date: null,
-        sorteeriKategooria:"",
-        menu: false,
-        modal: false,
-        sorteeriKuu:"",
-        kategooriaValik:"",
-        thisMonth:"",
-        hind:"",
-        nimetus:"",
-        date:"",
-        validateToode: {nimi:false,hind:false,kategooria:false},
-        kuud: [{nimi: 'jaanuar', nr: 0},{nimi: 'Veebruar', nr: 1},{nimi: 'Märts', nr: 2},{nimi: 'Aprill', nr: 3},{nimi: 'Mai', nr: 4},{nimi: 'Juuni', nr: 5},{nimi: 'Juuli', nr: 6},{nimi: 'August', nr: 7},{nimi: 'September', nr: 8},{nimi: 'Oktoober', nr:9 },{nimi: 'November', nr: 10},{nimi: 'detsember', nr: 11}]
+      kategooriad: [
+        "Auto",
+        "Toidukaup",
+        "Korter/kommunaalid",
+        "Meelelahutus",
+        "Muu",
+        "Säästud"
+      ],
+      date: null,
+      sorteeriKategooria: "",
+      menu: false,
+      modal: false,
+      sorteeriKuu: "",
+      kategooriaValik: "",
+      thisMonth: "",
+      hind: "",
+      nimetus: "",
+      date: "",
+      validateToode: { nimi: false, hind: false, kategooria: false },
+      kuud: [
+        { nimi: "jaanuar", nr: 0 },
+        { nimi: "Veebruar", nr: 1 },
+        { nimi: "Märts", nr: 2 },
+        { nimi: "Aprill", nr: 3 },
+        { nimi: "Mai", nr: 4 },
+        { nimi: "Juuni", nr: 5 },
+        { nimi: "Juuli", nr: 6 },
+        { nimi: "August", nr: 7 },
+        { nimi: "September", nr: 8 },
+        { nimi: "Oktoober", nr: 9 },
+        { nimi: "November", nr: 10 },
+        { nimi: "detsember", nr: 11 }
+      ]
     };
   },
-  computed:{
-      saabLisada:function(){
-         if(this.validateToode.nimi && this.validateToode.hind && this.validateToode.kategooria){
-             return true;
-         }
+  computed: {
+    saabLisada: function() {
+      if (
+        this.validateToode.nimi &&
+        this.validateToode.hind &&
+        this.validateToode.kategooria
+      ) {
+        return true;
       }
-  },
-  watch:{
-      nimetus: function(){
-          if(this.nimetus.length > 1 ){
-            this.validateToode.nimi = true;
-
-          }else{
-            this.validateToode.nimi = false; 
-          }
-      },
-      hind: function(){
-          if(this.hind.length > 0 ){
-            this.validateToode.hind = true;
-          }else{
-            this.validateToode.hind = false;
-          }
-      },
-      kategooriaValik: function(){
-          if(this.kategooriaValik.length > 1 ){
-            this.validateToode.kategooria = true;
-          }else{
-            this.validateToode.kategooria = false;
-          }
-      },
-      sorteeriKuu: function(){
-          this.valiKuu(this.sorteeriKuu)
-      },
-      sorteeriKategooria: function(){
-          this.valiKategooria(this.sorteeriKategooria);
-      }
-  },
-  created(){
-      this.thisMonth = new Date().toJSON().slice(0,7);
-      let monthNumber = new Date().getMonth();
-      this.sorteeriKuu = this.kuud[monthNumber].nr; 
-
-    },
-    methods:{
-        getToken(){
-            let token  = JSON.parse(localStorage.getItem('token'));
-            return {
-                    token : token.id,
-                    user  : token.userId
-                };
-        },
-        resetToode(){
-            this.hind = "";
-            this.nimetus ="";
-            this.kategooriaValik = "";
-        },
-        lisaToode(){
-            let vm = this;
-            let hind = this.hind;
-            let tooteNimi= this.nimetus; 
-            let kategooria =this.kategooriaValik;
-            let dateStringina = new Date().toLocaleDateString('et-ET',{ year: 'numeric', month:'numeric', day:'numeric' });
-
-
-            let kuu = new Date().getMonth();
-            let owner = this.getToken().user;
-            if(owner == "5a9ec7f09d58995f40877545"){
-                owner = "Ermo";
-            }else{
-                owner = "Jane";
-            }
-            //console.log(owner);
-            //let kuu = this.date.length > 1 ? this.date : this.thisMonth ;
-            let toode = {
-                hind : parseFloat(this.hind),
-                nimetus: this.nimetus,
-                kategooria : this.kategooriaValik,
-                kuu : kuu,
-                kuupaev: dateStringina,
-                omanik : owner
-            }
-            console.log(toode);
-            tooteBus.$emit('toode', toode);
-
-            axios.post('http://192.168.0.199:3000/api/tooteds?access_token='+this.getToken().token, toode).then((response)=>{
-                vm.resetToode();
-                //console.log(response);
-            }).catch((error) =>{
-                console.log(error);
-            })
-        },
-        valiKuu(i){
-            tooteBus.$emit('misKuu', i);
-        },
-        valiKategooria(sordiKategooria){
-            tooteBus.$emit('misKategooria', sordiKategooria)
-        }
     }
+  },
+  watch: {
+    nimetus: function() {
+      if (this.nimetus.length > 1) {
+        this.validateToode.nimi = true;
+      } else {
+        this.validateToode.nimi = false;
+      }
+    },
+    hind: function() {
+      if (this.hind.length > 0) {
+        this.validateToode.hind = true;
+      } else {
+        this.validateToode.hind = false;
+      }
+    },
+    kategooriaValik: function() {
+      if (this.kategooriaValik.length > 1) {
+        this.validateToode.kategooria = true;
+      } else {
+        this.validateToode.kategooria = false;
+      }
+    },
+    sorteeriKuu: function() {
+      this.valiKuu(this.sorteeriKuu);
+    },
+    sorteeriKategooria: function() {
+      this.valiKategooria(this.sorteeriKategooria);
+    }
+  },
+  created() {
+    this.thisMonth = new Date().toJSON().slice(0, 7);
+    let monthNumber = new Date().getDate() < 8 ? new Date().getMonth()-1 : new Date().getMonth();
+    this.sorteeriKuu = this.kuud[monthNumber].nr;
+  },
+  methods: {
+    getToken() {
+      let token = JSON.parse(localStorage.getItem("token"));
+      return {
+        token: token.id,
+        user: token.userId
+      };
+    },
+    resetToode() {
+      this.hind = "";
+      this.nimetus = "";
+      this.kategooriaValik = "";
+    },
+    lisaToode() {
+      let vm = this;
+      let hind = this.hind;
+      let tooteNimi = this.nimetus;
+      let kategooria = this.kategooriaValik;
+      let dateStringina = new Date().toLocaleDateString("et-ET", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      });
+
+      let kuu = new Date().getMonth();
+      let owner = this.getToken().user;
+      if (owner == "5a9ec7f09d58995f40877545") {
+        owner = "Ermo";
+      } else {
+        owner = "Jane";
+      }
+      //console.log(owner);
+      //let kuu = this.date.length > 1 ? this.date : this.thisMonth ;
+      let toode = {
+        hind: parseFloat(this.hind),
+        nimetus: this.nimetus,
+        kategooria: this.kategooriaValik,
+        kuu: kuu,
+        kuupaev: dateStringina,
+        omanik: owner
+      };
+      console.log(toode);
+      tooteBus.$emit("toode", toode);
+
+      axios
+        .post(
+          "http://192.168.0.199:3000/api/tooteds?access_token=" +
+            this.getToken().token,
+          toode
+        )
+        .then(response => {
+          vm.resetToode();
+          //console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    valiKuu(i) {
+      tooteBus.$emit("misKuu", i);
+    },
+    valiKategooria(sordiKategooria) {
+      tooteBus.$emit("misKategooria", sordiKategooria);
+    }
+  }
 };
 </script>
 <style scoped>
