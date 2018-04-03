@@ -2,7 +2,7 @@
   
       <v-layout row wrap style="margin-top:63px;">
             <v-flex xs12>
-                <v-card style="padding:15px;">
+                <v-card >
                     <v-layout >
                         <v-flex xs7 md12 d-flex>
                         <v-text-field
@@ -78,7 +78,7 @@
                             </v-menu>
                         </v-flex>
                     </v-layout>
-                    <v-layout>
+                    <v-layout style="padding-left:5px; padding-right:5px;">
                         <v-btn v-if="saabLisada" block color="primary" @click="lisaToode()" >VALMIS</v-btn>
                         <v-btn v-else block disabled color="primary" >VALMIS</v-btn>
                     </v-layout>
@@ -108,9 +108,11 @@
                                 prepend-icon="event"
                                 hide-details
                                 
-                                ></v-select> 
+                                ></v-select>
+                                <v-btn block class="primary" @click="resetSortValikud()">Reseti valikud</v-btn> 
                         </v-flex>
                 </v-card>
+                <kokku></kokku>
             </v-flex>
         
       </v-layout>
@@ -118,7 +120,11 @@
 <script>
 import { tooteBus } from "../../main";
 import axios from "axios";
+import kokku from "./kokku"
 export default {
+    components:{
+        kokku
+    },
   data() {
     return {
       kategooriad: [
@@ -141,7 +147,7 @@ export default {
       date: "",
       validateToode: { nimi: false, hind: false, kategooria: false },
       kuud: [
-        { nimi: "jaanuar", nr: 0 },
+        { nimi: "Jaanuar", nr: 0 },
         { nimi: "Veebruar", nr: 1 },
         { nimi: "Märts", nr: 2 },
         { nimi: "Aprill", nr: 3 },
@@ -152,7 +158,7 @@ export default {
         { nimi: "September", nr: 8 },
         { nimi: "Oktoober", nr: 9 },
         { nimi: "November", nr: 10 },
-        { nimi: "detsember", nr: 11 }
+        { nimi: "Detsember", nr: 11 }
       ]
     };
   },
