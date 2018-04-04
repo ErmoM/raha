@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       andmed: {},
-      kuu: parseInt(""),
+      kuu: "",
       kuud: [
         "Jaanuar",
         "Veebruar",

@@ -133,7 +133,7 @@ export default {
     let owner = token.userId != "5a9ec7f09d58995f40877545" ? "Jane" : "Ermo";
     let users = ["Jane", "Ermo"];
     //PÄRING
-    let currentMonth = new Date().getMonth();
+    let currentMonth = new Date().getDate() < 8 ? new Date().getMonth() - 1 : new Date().getMonth();
     //let kategooriad = ['auto','Meelelahutus','Toidukaup', 'Muu', 'Korter/kommunaalid'];
     for (let i = 0; i < users.length; i++) {
       axios

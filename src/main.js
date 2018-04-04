@@ -7,6 +7,8 @@ import Vuetify from 'vuetify'
 import axios from 'axios'
 import moment from 'moment/src/moment'
 
+const echart = require("echart");
+
 import 'vuetify/dist/vuetify.min.css';
 
 Vue.config.productionTip = false
