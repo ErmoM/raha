@@ -270,6 +270,13 @@ export default {
     },
     valiKategooria(sordiKategooria) {
       tooteBus.$emit("misKategooria", sordiKategooria);
+    },
+    resetSortValikud(){
+        let Month =  new Date().getDate() < 8 ? new Date().getMonth()-1 : new Date().getMonth();
+        this.sorteeriKuu = this.kuud[Month];
+        this.sorteeriKategooria = "";
+        tooteBus.$emit("misKuu",Month);
+        tooteBus.$emit("misKategooria", "")
     }
   }
 };
