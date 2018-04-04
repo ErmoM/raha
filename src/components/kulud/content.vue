@@ -1,5 +1,6 @@
 <template>
 <div>
+
   <h1 class="display-3">{{hetkeKuu}}</h1>
   <v-data-table
     :headers="headers"
@@ -23,6 +24,13 @@
       <td >{{ props.item.kategooria }}</td>
       <td>{{ props.item.hind }} €</td>
       <td>{{props.item.kuupaev }}</td>
+      <td >
+          
+          <v-btn icon class="right mx-0" @click="kustutaToode(props.item.id)">
+            <v-icon color="pink">delete</v-icon>
+          </v-btn>
+        </td>
+    
     </template>
 
     <template slot="no-data"><span style="margin:0 auto;"> Selle kuu andmed puuduvad!</span> </template>
@@ -45,9 +53,11 @@ export default {
         },
         { text: "Kategooria", value: "kategooria" },
         { text: "Hind", value: "hind" },
-        { text: "Kuu", value: "kuu", sortable: true }
+        { text: "Kuu", value: "kuu", sortable: true },
+        { text: "Kustuta", value: "kustuta" }
       ],
       items: [],
+
       kuud: [
         "Jaanuar",
         "Veebruar",
@@ -109,10 +119,11 @@ export default {
     });
 
     let vm = this;
-    tooteBus.$on("toode", toode => {
-      toode.date = this.korrasDate(toode.date);
-      vm.items.push(toode);
-    });
+    // tooteBus.$on("toode", toode => {
+    //   let query = encodeURIComponent(
+    //           `{"where":{"omanik":${owner}, "kuu": ${data} }}`
+    //         );
+    // });
   },
   methods: {
     consoleLog() {
@@ -125,7 +136,7 @@ export default {
       let month =
         date.getMonth() + 1 < 10
           ? "0" + (date.getMonth() + 1)
-          : (date.getMonth() + 1);
+          : date.getMonth() + 1;
       let dt = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
 
       let dateFull = dt + "." + month + "." + year;
@@ -162,6 +173,20 @@ export default {
         .catch(error => {
           vm.items = [];
         });
+    },
+    kustutaToode(id) {
+      
+      let token = JSON.parse(localStorage.getItem("token"));
+      const index = this.items.map(function(e) {return e.id;}).indexOf(id);
+
+      confirm("Kindel, et tahad kustutada ?") && this.items.splice(index, 1);
+      axios.delete(
+        "http://192.168.0.199:3000/api/tooteds/" +
+          id +
+          "?access_token=" +
+          token.id
+      );
+      
     }
   }
 };

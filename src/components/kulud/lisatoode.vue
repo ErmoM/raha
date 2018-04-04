@@ -248,8 +248,8 @@ export default {
         //kuupaev: dateStringina,
         omanik: owner
       };
-      console.log(toode);
-      tooteBus.$emit("toode", toode);
+
+      
 
       axios
         .post(
@@ -259,6 +259,8 @@ export default {
         )
         .then(response => {
           vm.resetToode();
+
+          tooteBus.$emit("misKuu", vm.sorteeriKuu );
           //console.log(response);
         })
         .catch(error => {
