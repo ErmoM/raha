@@ -1,13 +1,19 @@
 <template>
   <v-app  id="inspire" style="background-color:#f1efef">
    
+
+
+
+
+
+
     <v-content>
       <v-container fluid>
         <v-layout v-bind="binding">
           <v-flex xs12 sm12 md8 lg9 mr-2>
             <tabledata></tabledata>
           </v-flex>
-          <v-flex xs12 sm12 md4 lg3 style="margin-top:12px">
+          <v-flex hidden-sm-and-down  xs12 sm12 md4 lg3 style="margin-top:12px">
            <lisatoode></lisatoode>
           </v-flex>
         </v-layout>

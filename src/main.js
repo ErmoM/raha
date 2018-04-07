@@ -6,8 +6,8 @@ import router from './router'
 import Vuetify from 'vuetify'
 import axios from 'axios'
 import moment from 'moment/src/moment'
-
-const echart = require("echart");
+import VueSweetalert2 from 'vue-sweetalert2';
+import VueCharts from 'vue-chartjs'
 
 import 'vuetify/dist/vuetify.min.css';
 
@@ -18,6 +18,8 @@ export const tooteBus = new Vue();
 
 Vue.use(Vuetify)
 Vue.use(axios)
+Vue.use(VueCharts)
+Vue.use(VueSweetalert2);
 
 
 /* eslint-disable no-new */

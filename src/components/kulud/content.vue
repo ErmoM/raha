@@ -1,7 +1,63 @@
 <template>
 <div>
 
-  <h1 class="display-3">{{hetkeKuu}}</h1>
+  <v-layout>
+    <v-flex xs11>
+      <h1 class="display-3">{{hetkeKuu}}</h1>
+    </v-flex>
+    <v-layout xs12 hidden-md-and-up>
+      <v-flex xs1 >
+      <v-btn 
+              dark
+              fab
+              color="primary"
+              @click.stop="dialog = true"
+            >
+              <v-icon>add</v-icon>
+            </v-btn>
+    </v-flex>
+    </v-layout>
+    
+  </v-layout>
+
+
+
+  <!--   DIALOOG ALGUS    -->
+
+    <v-dialog
+        v-model="dialog"
+        fullscreen
+        transition="dialog-bottom-transition"
+        :overlay="false"
+        scrollable
+        
+      >
+        <v-card tile>
+          <v-toolbar card dark color="primary">
+            
+            <v-toolbar-title>Lisa toode</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-btn dark flat @click.native="dialog = false">Sulge</v-btn>
+            </v-toolbar-items>
+            
+          </v-toolbar>
+          <v-flex xs12 mx-auto>
+            <lisatoodemobile></lisatoodemobile>
+          </v-flex>
+          
+          
+
+          <div style="flex: 1 1 auto;"/>
+        </v-card>
+    </v-dialog>
+
+  <!--   DIALOOG LÕPP    -->
+
+
+
+
+  
   <v-data-table
     :headers="headers"
     :items="items"
@@ -26,7 +82,7 @@
       <td>{{props.item.kuupaev }}</td>
       <td >
           
-          <v-btn icon class="right mx-0" @click="kustutaToode(props.item.id)">
+          <v-btn icon class="right mx-0" @click.native="kustutaToode(props.item.id)">
             <v-icon color="pink">delete</v-icon>
           </v-btn>
         </td>
@@ -41,10 +97,15 @@
 <script>
 import { tooteBus } from "../../main";
 import axios from "axios";
-import moment from "moment/src/moment";
+import lisatoodemobile from "./lisaToodeMobile"
 export default {
+  components:{
+    lisatoodemobile
+  },
   data() {
+
     return {
+      dialog: false,
       headers: [
         {
           text: "Nimetus",
@@ -126,6 +187,10 @@ export default {
     // });
   },
   methods: {
+    avaDialoog(){
+      this.dialog = true;
+      console.log(this.dialog)
+    },
     consoleLog() {
       console.log(this.items);
     },
@@ -175,22 +240,34 @@ export default {
         });
     },
     kustutaToode(id) {
-      
+      let vm = this;
       let token = JSON.parse(localStorage.getItem("token"));
       const index = this.items.map(function(e) {return e.id;}).indexOf(id);
-
-      let confirm = confirm("Kindel, et tahad kustutada ?");
-      if(confirm){
-         this.items.splice(index, 1)
-          axios.delete(
-        "http://192.168.0.199:3000/api/tooteds/" +
-          id +
-          "?access_token=" +
-          token.id
-      );
-      
-      }
-     
+  
+            this.$swal({
+              title: 'Kindel, et tahad kustutada?',
+              
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Jah, kustuta '
+            }).then((result) => {
+              if (result.value) {
+                vm.items.splice(index, 1)
+                axios.delete(
+                  "http://192.168.0.199:3000/api/tooteds/" +
+                    id +
+                    "?access_token=" +
+                    token.id
+                );
+                this.$swal(
+                  'Kustutatud!',
+                  '',
+                  'success'
+                )
+              }
+            })
     }
   }
 };

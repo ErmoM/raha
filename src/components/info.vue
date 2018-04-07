@@ -104,13 +104,20 @@
             </v-card>
         </v-layout>
       </v-container>
+
+      <graafikud></graafikud>
+      
     </v-content>
   </div>
 </template>
 <script>
 import axios from "axios";
 import { tooteBus } from "../main";
+import graafikud from "../components/graafikud/graafik"
 export default {
+    components:{
+        graafikud
+    },
   data() {
     return {
       isAuth: true,

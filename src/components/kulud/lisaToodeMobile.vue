@@ -84,34 +84,7 @@
                     </v-layout>
                     
                 </v-card>
-                <v-card style="margin-top:10px;">
-                    <v-flex hidden-sm-and-down  xs12 style="padding:5px;" >
-                      
-                                <v-select
-                                :items="kuud"
-                                v-model="sorteeriKuu"
-                                label="Vali kuu"
-                                single-line
-                                item-value="nr"
-                                item-text = "nimi"
-                                auto
-                                prepend-icon="event"
-                                hide-details
-                                
-                                ></v-select> 
-                                <v-select
-                                :items="kategooriad"
-                                v-model="sorteeriKategooria"
-                                label="Vali kategooria"
-                                single-line
-                                auto
-                                prepend-icon="event"
-                                hide-details
-                                
-                                ></v-select>
-                                <v-btn block class="primary" @click="resetSortValikud()">Reseti valikud</v-btn> 
-                        </v-flex>
-                </v-card>
+              
                 <kokku ></kokku>
             </v-flex>
         
@@ -194,12 +167,6 @@ export default {
       } else {
         this.validateToode.kategooria = false;
       }
-    },
-    sorteeriKuu: function() {
-      this.valiKuu(this.sorteeriKuu);
-    },
-    sorteeriKategooria: function() {
-      this.valiKategooria(this.sorteeriKategooria);
     }
   },
   created() {
@@ -266,19 +233,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
-    valiKuu(i) {
-      tooteBus.$emit("misKuu", i);
-    },
-    valiKategooria(sordiKategooria) {
-      tooteBus.$emit("misKategooria", sordiKategooria);
-    },
-    resetSortValikud(){
-        let Month =  new Date().getDate() < 8 ? new Date().getMonth()-1 : new Date().getMonth();
-        this.sorteeriKuu = this.kuud[Month];
-        this.sorteeriKategooria = "";
-        tooteBus.$emit("misKuu",Month);
-        tooteBus.$emit("misKategooria", "")
     }
   }
 };

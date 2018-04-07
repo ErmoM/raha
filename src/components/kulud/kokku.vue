@@ -1,6 +1,7 @@
 <template>
-  <div style="margin-top:10px;">
-      <v-card >
+  <div style="margin-top:10px;" >
+    <v-layout xs12>
+        <v-card  style="width:100%">
           <v-flex xs12>
             <v-card-title> <h4>Kulud kokku : {{ kuuNimetus }}</h4></v-card-title>
             <v-divider></v-divider>
@@ -13,6 +14,8 @@
             
           </v-flex>
       </v-card>
+    </v-layout>
+      
   </div>
 </template>
 <script>
