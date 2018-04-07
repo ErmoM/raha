@@ -179,14 +179,18 @@ export default {
       let token = JSON.parse(localStorage.getItem("token"));
       const index = this.items.map(function(e) {return e.id;}).indexOf(id);
 
-      confirm("Kindel, et tahad kustutada ?") && this.items.splice(index, 1);
-      axios.delete(
+      let confirm = confirm("Kindel, et tahad kustutada ?");
+      if(confirm){
+         this.items.splice(index, 1)
+          axios.delete(
         "http://192.168.0.199:3000/api/tooteds/" +
           id +
           "?access_token=" +
           token.id
       );
       
+      }
+     
     }
   }
 };

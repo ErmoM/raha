@@ -1,9 +1,9 @@
 <template>
   
-      <v-layout row wrap style="margin-top:63px;">
+      <v-layout row wrap style="margin-top:63px; ">
             <v-flex xs12>
                 <v-card >
-                    <v-layout >
+                    <v-layout style="padding-left:5px; padding-right:5px;" >
                         <v-flex xs7 md12 d-flex>
                         <v-text-field
                         style="margin-right:5px"
@@ -29,7 +29,7 @@
                     </v-text-field>
                     </v-flex>
                     </v-layout>
-                    <v-layout>
+                    <v-layout style="padding-left:5px; padding-right:5px;">
                         <v-flex xs12 md12>
                             <v-select
                                 :items="kategooriad"
@@ -43,7 +43,7 @@
                                 ></v-select>
                         </v-flex>
                     </v-layout>
-                    <v-layout>
+                    <v-layout style="padding-left:5px; padding-right:5px;">
                         <v-flex xs12>
                              <v-menu
                                 ref="menu"
