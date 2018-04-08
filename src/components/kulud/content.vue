@@ -44,12 +44,30 @@
           </v-toolbar>
           <v-flex xs12 mx-auto>
             <lisatoodemobile></lisatoodemobile>
+          
           </v-flex>
           
           
 
           <div style="flex: 1 1 auto;"/>
         </v-card>
+
+        <!-- snackbar -->
+
+         <v-snackbar
+         :timeout="timeout"
+          :top="y === 'top'"
+          :bottom="y === 'bottom'"
+          :right="x === 'right'"
+          :left="x === 'left'"
+          :multi-line="mode === 'multi-line'"
+          :vertical="mode === 'vertical'"
+          
+          v-model="snackbar"
+        >
+          {{ text }}
+          <v-btn flat color="pink" @click.native="snackbar = false">Sulge</v-btn>
+      </v-snackbar>
     </v-dialog>
 
   <!--   DIALOOG LÕPP    -->
@@ -57,8 +75,8 @@
 
 
 
-  
-  <v-data-table
+  <v-card flat>
+    <v-data-table
     :headers="headers"
     :items="items"
     hide-actions
@@ -91,6 +109,8 @@
 
     <template slot="no-data"><span style="margin:0 auto;"> Selle kuu andmed puuduvad!</span> </template>
   </v-data-table>
+  </v-card>
+  
   </div>
 </template>
  
@@ -135,7 +155,13 @@ export default {
       query: "",
       hetkeKuu: "",
       hetkeKuuNumber: "",
-      sorteeriKategooria: ""
+      sorteeriKategooria: "",
+      snackbar: false,
+        y: 'bottom',
+        x: null,
+        mode: '',
+        timeout: 6000,
+        text: ""
     };
   },
   created() {
@@ -147,6 +173,10 @@ export default {
       `{"where":{"omanik":${owner}, "kuu": ${currentKuu} }}`
     );
     this.hetkeKuu = this.kuud[currentKuu].toUpperCase();
+
+    tooteBus.$on("snackbar", (data) =>{
+      this.snack(data);
+    })
 
     tooteBus.$on("misKuu", data => {
       this.hetkeKuu = this.kuud[data].toUpperCase();
@@ -239,6 +269,10 @@ export default {
           vm.items = [];
         });
     },
+    snack(data){
+      this.snackbar = true,
+      this.text = "Toode nimega : "+ data + " sisestatud!";
+    },
     kustutaToode(id) {
       let vm = this;
       let token = JSON.parse(localStorage.getItem("token"));
@@ -251,6 +285,7 @@ export default {
               showCancelButton: true,
               confirmButtonColor: '#3085d6',
               cancelButtonColor: '#d33',
+              cancelButtonText: 'Ei',
               confirmButtonText: 'Jah, kustuta '
             }).then((result) => {
               if (result.value) {
@@ -274,8 +309,12 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style >
 .mainContent {
   padding-left: 10px;
 }
+.dialog {
+  z-index: inherit;
+}
 </style>
+ 

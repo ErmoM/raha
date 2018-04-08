@@ -228,11 +228,13 @@ export default {
           vm.resetToode();
 
           tooteBus.$emit("misKuu", vm.sorteeriKuu );
+          tooteBus.$emit("snackbar", toode.nimetus );
           //console.log(response);
         })
         .catch(error => {
           console.log(error);
         });
+      
     }
   }
 };
